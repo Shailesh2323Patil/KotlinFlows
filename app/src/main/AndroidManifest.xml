@@ -21,6 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Events"
+            android:exported="false" />
+        <activity
+            android:name=".Operators"
+            android:exported="false" />
+        <activity
+            android:name=".NonTerminalOperators"
+            android:exported="false" />
     </application>
-
 </manifest>

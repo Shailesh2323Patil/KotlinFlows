@@ -1,76 +1,40 @@
 package com.example.learn_kotlin_flows
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
+import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //launchFlow()
+        var event = findViewById<Button>(R.id.btn_event)
+        var operator = findViewById<Button>(R.id.btn_operator)
+        var non_terminal_operator = findViewById<Button>(R.id.btn_non_operator)
 
-        //cancelFlow()
+        event.setOnClickListener {
+            activityEvent()
+        }
 
-        multipleConsumer()
-    }
+        operator.setOnClickListener {
+            activityOperator()
+        }
 
-    private fun launchFlow() {
-        GlobalScope.launch {
-            val data: Flow<Int> = producer()
-            data.collect {
-                Log.d("FLOWS", it.toString())
-            }
+        non_terminal_operator.setOnClickListener {
+            activityNonOperator()
         }
     }
 
-    private fun cancelFlow() {
-        val job = GlobalScope.launch {
-            val data: Flow<Int> = producer()
-            data.collect {
-                Log.d("FLOWS", it.toString())
-            }
-        }
-
-        GlobalScope.launch {
-            delay(3500)
-            job.cancel()
-        }
+    private fun activityEvent() {
+        startActivity(Intent(this, Events::class.java))
+    }
+    private fun activityOperator() {
+        startActivity(Intent(this, Operators::class.java))
     }
 
-    private fun multipleConsumer() {
-        GlobalScope.launch {
-            val data: Flow<Int> = producer()
-            data.collect {
-                Log.d("FLOWS 1 - ", it.toString())
-            }
-        }
-
-        /**
-         * After Adding Delay Of 2.5 Sec
-         * Still Collect function Fetch the data from Beginning
-         * */
-        GlobalScope.launch {
-            val data: Flow<Int> = producer()
-            delay(2500)
-            data.collect {
-                Log.d("FLOWS 2 - ", it.toString())
-            }
-        }
-    }
-
-    private fun producer() = flow<Int> {
-        val list = listOf<Int>(1,2,3,4,5,6,7,8,9,10)
-        list.forEach {
-            delay(1000)
-            emit(it)
-        }
+    private fun activityNonOperator() {
+        startActivity(Intent(this, NonTerminalOperators::class.java))
     }
 }
